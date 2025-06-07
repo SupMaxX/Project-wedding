@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Poze</title>
+  <link rel="stylesheet" href="cssnunta.css">
+  <style>
+    iframe {
+      display: none;
+    }
+
+    .message-box {
+      margin-top: 30px;
+      padding: 25px;
+      border-radius: 10px;
+      font-size: 1.2em;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .success {
+      background: #e6fff2;
+      border: 2px solid #66cc99;
+      color: #2f805d;
+    }
+
+    .error {
+      background: #ffe6e6;
+      border: 2px solid #cc6666;
+      color: #993333;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Încarcă pozele tale 📸</h1>
+    <p>Pozele vor apărea în galeria publică.</p>
+  </header>
+
+  <section class="actions">
+<form action="upload.php" method="post" enctype="multipart/form-data">
+  <input type="file" name="poza" id="poza" accept="image/*,video/*" required hidden>
+  <label for="poza" class="custom-file-upload">📁 Alege fișier</label><br><br>
+  <button type="submit">Trimite fișierul</button>
+</form>
+    <iframe name="uploadFrame" id="uploadFrame"></iframe>
+
+    <div id="uploadMessage" class="message-box" style="display:none;"></div>
+  </section>
+
+  <footer>
+    <a href="nunta.html" class="back-button">← Înapoi la pagina principală</a>
+  </footer>
+
+  <script>
+    const iframe = document.getElementById("uploadFrame");
+    const messageBox = document.getElementById("uploadMessage");
+
+    iframe.onload = function () {
+      const response = iframe.contentDocument.body.textContent;
+
+      if (response.includes("Poza a fost încărcată cu succes")) {
+        messageBox.className = "message-box success";
+        messageBox.innerHTML = `
+          ✅ <strong>Poza a fost încărcată cu succes!</strong><br>
+          Mulțumim că ai contribuit cu o amintire frumoasă!`;
+      } else {
+        messageBox.className = "message-box error";
+        messageBox.innerHTML = `
+          ❌ <strong>Eroare la încărcarea fișierului!</strong><br>
+          Te rugăm să încerci din nou.`;
+      }
+
+      messageBox.style.display = "block";
+    };
+  </script>
+</body>
+</html>
